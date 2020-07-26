@@ -1,0 +1,3 @@
+api_token: sometoken_id
+admins_ids:
+  - stastodd: some_id
