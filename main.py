@@ -3,7 +3,6 @@ import sys
 import traceback
 from time import sleep
 from datetime import datetime
-
 import asyncio
 import aiohttp
 import yaml
@@ -92,7 +91,7 @@ def create_photo(date=None) -> str:
     else:
         now_string = date.strftime("%d-%m-%Y_%H:%M:%S")
 
-    imagename = f"{now_string}.jpg"
+    imagename = f"images/{now_string}.jpg"
 
     camera = picamera.PiCamera()
     # TODO: Add more camera settings
