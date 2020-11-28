@@ -1,4 +1,5 @@
-#!/home/stastodd/projects/venv_37_telegram-bot/bin/python3.7
+#!/home/stastodd/projects/rpi_pirsensor_camera_telegram/venv/bin/python3.8
+
 import sys
 import traceback
 from time import sleep
@@ -8,6 +9,7 @@ import aiohttp
 import yaml
 from typing import List, Union
 import sqlite3
+import os
 import picamera
 from gpiozero import MotionSensor, Buzzer
 
@@ -16,6 +18,8 @@ from gpiozero import MotionSensor, Buzzer
 This little program use 'gpiozero' library for work with GPIO pins. It's lib is very easy for work, but this lib isn't 
 provide detail configurable properties. In the future, 'gpiozero' lib will be repplace to 'import RPi.GPIO as GPIO'. 
 RPi.GPIO libraty can work with signal interruptions.
+
+TODO: Exclude operation with file create if flag save_image=False
 """
 
 
@@ -105,15 +109,13 @@ def create_photo(date=None) -> str:
         traceback.print_exc(limit=2, file=sys.stdout)  # Exception detail via traceback
         print("--- End Exception Data:")
     finally:
-        print("CleanUp")
         camera.close()
-        print("End of program")
         return imagename
 
 
-def main():
+def main(save_image=False):
     # Fixme: Remove strings with BUZZER_PIN actions after correcting PIR-sensor position
-    # PIR_PIN = MotionSensor(4)
+    PIR_PIN = MotionSensor(4)
     # BUZZER_PIN = Buzzer(17)
 
     tbot_data_all = get_data_from_yaml("data.yaml")
@@ -145,6 +147,11 @@ def main():
                     all_data = [{"chat_id": str(adm), "photo": b_image} for adm in admins_ids]
                     coroutines = [send_image_to_tbot(url, one_data) for one_data in all_data]
                     loop.run_until_complete(asyncio.gather(*coroutines))
+                if not save_image:
+                    try:
+                        os.remove(image)
+                    except:
+                        print(f"File {image} can't be deleted")
 
             PIR_PIN.wait_for_no_motion(timeout=10)
             # BUZZER_PIN.on()
@@ -166,4 +173,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(save_image=False)
