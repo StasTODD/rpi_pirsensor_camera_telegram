@@ -94,6 +94,9 @@ def create_photo(date=None) -> str:
     imagename = f"images/{now_string}.jpg"
 
     camera = picamera.PiCamera()
+    # Picture timestamp:
+    camera.annotate_text_size = 40
+    camera.annotate_text = " " * 42 + " ".join(now_string.split("_"))
     # TODO: Add more camera settings
     try:
         camera.capture(imagename)
