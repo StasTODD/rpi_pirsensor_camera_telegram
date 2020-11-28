@@ -113,8 +113,8 @@ def create_photo(date=None) -> str:
 
 def main():
     # Fixme: Remove strings with BUZZER_PIN actions after correcting PIR-sensor position
-    PIR_PIN = MotionSensor(4)
-    BUZZER_PIN = Buzzer(17)
+    # PIR_PIN = MotionSensor(4)
+    # BUZZER_PIN = Buzzer(17)
 
     tbot_data_all = get_data_from_yaml("data.yaml")
 
