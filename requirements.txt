@@ -12,5 +12,6 @@ multidict==6.0.4
 picamera==1.13
 pkg_resources==0.0.0
 PyYAML==6.0
+RPi.GPIO==0.7.1
 typing_extensions==4.4.0
 yarl==1.8.2
